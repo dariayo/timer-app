@@ -142,15 +142,13 @@ class MainActivity : AppCompatActivity() {
 
                 if (remainingTime <= 0) {
                     cancel()
-//                    showAlarmScreen()
-                    closeSelectedApp()
+                    showAlarmScreen()
                 }
             }
 
             override fun onFinish() {
                 textView.text = "00:00"
-//                showAlarmScreen()
-                closeSelectedApp()
+                showAlarmScreen()
             }
         }.start()
     }
