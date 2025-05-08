@@ -142,13 +142,15 @@ class MainActivity : AppCompatActivity() {
 
                 if (remainingTime <= 0) {
                     cancel()
-                    showAlarmScreen()
+//                    showAlarmScreen()
+                    closeSelectedApp()
                 }
             }
 
             override fun onFinish() {
                 textView.text = "00:00"
-                showAlarmScreen()
+//                showAlarmScreen()
+                closeSelectedApp()
             }
         }.start()
     }
@@ -156,17 +158,46 @@ class MainActivity : AppCompatActivity() {
     private fun showAlarmScreen() {
         AlertDialog.Builder(this)
             .setTitle("Время вышло!")
-            .setMessage("Лимит на использование ${selectedApp} исчерпан.")
-            .setPositiveButton("OK") { _, _ -> lockScreen() }
+            .setMessage("Лимит на использование приложения исчерпан.")
+            .setPositiveButton("OK") { _, _ ->
+                closeSelectedApp() // Изменено с lockScreen() на closeSelectedApp()
+            }
             .setCancelable(false)
             .show()
     }
 
-    private fun lockScreen() {
-        if (dpm.isAdminActive(adminComponent)) {
-            dpm.lockNow()
-        } else {
-            Toast.makeText(this, "Нет прав администратора", Toast.LENGTH_SHORT).show()
+    private fun closeSelectedApp() {
+        selectedApp?.let { packageName ->
+            if (isAccessibilityServiceEnabled()) {
+                val intent = Intent(this, AppBlockerService::class.java).apply {
+                    putExtra("command", "block")
+                    putExtra("package_name", packageName)
+                }
+                startService(intent)
+                Toast.makeText(this, "Приложение будет закрыто", Toast.LENGTH_SHORT).show()
+            } else {
+                showAccessibilityServiceDialog()
+            }
         }
+    }
+
+    private fun isAccessibilityServiceEnabled(): Boolean {
+        val service = ComponentName(this, AppBlockerService::class.java)
+        val enabledServices = Settings.Secure.getString(
+            contentResolver,
+            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+        )
+        return enabledServices?.contains(service.flattenToString()) ?: false
+    }
+
+    private fun showAccessibilityServiceDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Требуется включить сервис доступности")
+            .setMessage("Для закрытия приложений необходимо включить сервис доступности")
+            .setPositiveButton("Настройки") { _, _ ->
+                startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
     }
 }

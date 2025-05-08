@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="accessibility_service_description">Сервис блокировки приложений</string>
+    <string name="admin_description">Разрешите приложению блокировать устройство</string>
 </resources>
