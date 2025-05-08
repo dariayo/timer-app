@@ -9,7 +9,6 @@
     android:background="#B0C4DE"
     tools:context=".MainActivity">
 
-
     <!-- Поля для ввода времени -->
     <EditText
         android:id="@+id/inputHours"
@@ -41,6 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+
     <!-- Таймер -->
     <TextView
         android:id="@+id/textView"
@@ -52,8 +52,26 @@
         app:layout_constraintTop_toBottomOf="@id/inputSeconds"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/buttonStart"
+        app:layout_constraintBottom_toTopOf="@id/buttonSelectApp"
         app:layout_constraintVertical_bias="0.1"/>
+
+    <TextView
+        android:id="@+id/selectedAppTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выбрано: "
+        android:layout_marginTop="16dp"
+    />
+
+    <!-- Кнопка выбора приложения -->
+    <Button
+        android:id="@+id/buttonSelectApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выбрать приложение"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Кнопка запуска таймера -->
     <Button
@@ -61,10 +79,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Запустить таймер"
-        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintTop_toBottomOf="@id/buttonSelectApp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
+    
+        
 </androidx.constraintlayout.widget.ConstraintLayout>
-
